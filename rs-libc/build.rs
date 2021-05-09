@@ -22,11 +22,9 @@ fn main() {
     let extension_filter = |ext| {
         move |f: Result<DirEntry, _>| {
             let f = f.unwrap();
-            if f.file_type().unwrap().is_file() {
-                let path = f.path();
-                if path.extension().and_then(OsStr::to_str) == Some(ext) {
-                    return Some(path);
-                }
+            let path = f.path();
+            if path.extension().and_then(OsStr::to_str) == Some(ext) {
+                return Some(path);
             }
             None
         }
