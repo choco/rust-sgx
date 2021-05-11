@@ -21,9 +21,8 @@ fn main() {
 
     let extension_filter = |ext| {
         move |f: Result<DirEntry, _>| {
-            let f = f.unwrap();
-            let path = f.path();
-            if path.extension().and_then(OsStr::to_str) == Some(ext) {
+            let path = f.unwrap().path().canonicalize().unwrap();
+            if path.is_file() && path.extension().and_then(OsStr::to_str) == Some(ext) {
                 return Some(path);
             }
             None
